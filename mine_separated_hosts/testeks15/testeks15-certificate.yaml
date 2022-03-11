@@ -1,0 +1,13 @@
+apiVersion: cert-manager.io/v1
+
+kind: Certificate
+metadata:
+  name: testeks15-ganemo-com-tls
+spec:
+  secretName: testeks15-ganemo-com
+  issuerRef:
+    name: letsencrypt-prod
+    kind: ClusterIssuer
+  commonName: testeks15.ganemo.co
+  dnsNames:
+    - testeks15.ganemo.co

@@ -1,0 +1,74 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: testeks15-odoo15
+  namespace: odoo
+spec:
+  progressDeadlineSeconds: 60
+  replicas: 1
+  revisionHistoryLimit: 1
+  selector:
+    matchLabels:
+      component: testeks15-odoo15
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 0
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        component: testeks15-odoo15
+    spec:
+      containers:
+      - env:
+        - name: ADMIN_PASSWORD
+          value: adminodoo
+        - name: DBFILTER
+        - name: DB_ENV_POSTGRES_PASSWORD
+          value: tux
+        - name: DB_ENV_POSTGRES_USER
+          value: tux
+        - name: DB_MAXCONN
+          value: "20"
+        - name: DB_PORT_5432_TCP_ADDR
+          value: postgres-cluster-ip-service
+        - name: DB_PORT_5432_TCP_PORT
+          value: "5432"
+        - name: ENTERPRISE
+          value: "false"
+        - name: LIMIT_MEMORY_HARD
+          value: "2684354560"
+        - name: LIMIT_MEMORY_SOFT
+          value: "2147483648"
+        - name: LIMIT_TIME_CPU
+          value: "60"
+        - name: LIMIT_TIME_REAL
+          value: "0"
+        - name: LIMIT_TIME_REAL_CRON
+          value: "-1"
+        - name: MAX_CRON_THREADS
+          value: "2"
+        - name: PROXY_MODE
+          value: "true"
+        - name: TEST_REPOS
+          value: "false"
+        - name: WORKERS
+          value: "0"
+        image: limfit/odoo:15.0
+        imagePullPolicy: Always
+        name: testeks15-odoo15
+        ports:
+        - containerPort: 8069
+        resources: {}
+        securityContext:
+          allowPrivilegeEscalation: false
+          privileged: false
+          readOnlyRootFilesystem: false
+          runAsNonRoot: true
+          runAsUser: 1000
+        stdin: true
+        tty: true
+      restartPolicy: Always
+      securityContext: {}
+      terminationGracePeriodSeconds: 30
